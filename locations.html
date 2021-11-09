@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Locations</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+ <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.min.js"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRbYjU52c3F_NUwv1vUPuIP9d3IxxBoJo&libraries=places&callback=initMap"></script>
+</head>
+<body>
+
+
+    <div class="row">
+        <div class="col-sm-12 mr-auto">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerExample" aria-controls="navbarTogglerExample" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <a class="navbar-brand" href="http://tudublin.ie">TU Dublin</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerExample">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0 col-sm-12">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="students.html">Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="locations.html">Locations<span class="sr-only"></span></a>
+                </li>
+            </ul>
+        </div>
+        </nav>
+        <h2>Campus Locations</h2>
+        <div id="mapLocation" style="width: 500px; height: 400px; grid-auto-flow: column;"></div>
+        </div>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript">
+    var locations = [
+      ['TU Dublin Grangegorman Campus', 53.3560395, -6.280728678510036, 5],
+      ['TU Dublin Blanchardstown Campus', 53.4050821, -6.381214603268807, 4],
+      ['TU Dublin Tallaght Campus', 53.29101685, -6.363056129444444, 3],
+    ];
+
+    var map = new google.maps.Map(document.getElementById('mapLocation'), {
+      zoom: 10,
+      center: new google.maps.LatLng(51.530616, -0.123125),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var markers = new Array();
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      markers.push(marker);
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+    function AutoCenter() {
+      //  Create a new viewpoint bound
+      var bounds = new google.maps.LatLngBounds();
+      //  Go through each...
+      $.each(markers, function (index, marker) {
+      bounds.extend(marker.position);
+      });
+      //  Fit these bounds to the map
+      map.fitBounds(bounds);
+    }
+    AutoCenter();
+
+  </script> 
+
+
+<footer class=" text-center bg-dark fixed-bottom">
+    <br>
+      <!-- Copyright -->
+      <img src="images/tu-dublin-logo-blue.svg" alt="tud logo">
+  <div class="text-center p-3 text-secondary">
+    © 2020 Copyright:
+    <a class="text-secondary" href="https://www.tudublin.ie/">TU Dublin</a>
+  </div>
+
+  </footer>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Students</title>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+   
+</head>
+<body>
+    <div class="row">
+        <div class="col-sm-12">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id= "navBar" col-sm-12>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerExample" aria-controls="navbarTogglerExample" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <a class="navbar-brand" href="http://tudublin.ie">TU Dublin</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerExample">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modules.html">Modules</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="students.html">Students<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="locations.html">Locations</a>
+                </li>
+            </ul>
+        </div>
+        <div class=".col-md-3 .offset-md-3">
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addMyModal">Send Email</button>
+         </div>
+        </nav>
+    </div>
+    </div>
+    <div class="list-group mr-auto">
+        <input class="form-control" id="txtSearch" type="text" placeholder="Search..">
+    </div>
+    <footer class=" text-center bg-dark fixed-bottom">
+        <br>
+          <!-- Copyright -->
+          <img src="images/tu-dublin-logo-blue.svg" alt="tud logo">
+      <div class="text-center p-3 text-secondary">
+        © 2020 Copyright:
+        <a class="text-secondary" href="https://www.tudublin.ie/">TU Dublin</a>
+      </div>
+    
+      </footer>
+ 
+  <!-- email student -->
+    <div class="modal fade" id="addMyModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h3>Email</h3>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="emailForm">
+                  <div class="form-group">
+                    <label class="control-label" for="email">Please select a student group:</label>
+                    <select multiple class="form-control" id="studentGroup" >
+                        <option selected>Group 1</option>
+                        <option>Group 2</option>
+                        <option>Group 3</option>
+                        <option>Group 4</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3" for="email">Content:</label>
+                    <div class="col-md-12">
+                        <textarea class="form-control" id="message" name="action" placeholder="Enter..." ></textarea>                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id ="btnSend" data-toggle="modal" data-target="#emailSend">Send</button>
+                    <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">Close</button>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script>
+
+
+        
+        $(document).ready(function(){
+            //Insert your student number in the URL if working in DIT, if at home omit it altogether
+            $.getJSON('http://localhost:8888/php/json-data-students.php', function(data) {
+                $.each(data.students, function(index, student) {
+                    $('.list-group').append('<a href="#test" class="list-group-item list-group-item-action">'+student.firstName+ ' ' + student.lastName + '</a>');
+		}); //End of Loop
+
+            }); //End of JSON Call
+
+        //filter student name on search
+        $("#txtSearch").on('keyup', function() {
+            var search = $(this).val().toLowerCase();
+            //Go through each list item and hide if not match search
+
+            $(".list-group-item").each(function() {
+                if ($(this).html().toLowerCase().indexOf(search) != -1) {
+                    $(this).show();
+                }
+                else {
+                    $(this).hide();  
+                }
+            });
+    
+        });
+        }); //End of document ready function
+
+        $("#btnSend").on('click',function() {
+
+        if ($("#studentGroup").val() != '' && $("#message").val() != '') {
+            alert('Email sent.');  
+        }else{
+            alert('Content cann\'t be blank.');  
+        }
+        });
+            // $(document).ready(function () {
+            // // Attach Button click event listener 
+            //     $("#btnSend").click(function(){
+            //         alert("Email Sent Successfully");   
+            //     });
+            // });
+    </script>        
+<br>
+
+    </body>
+</html>
+
